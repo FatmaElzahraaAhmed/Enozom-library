@@ -32,9 +32,10 @@ class BorrowingController extends Controller
     public function returnBook(Request $request)
     {
         $request->validate([
-            'borrowing_id' => 'required|exists:borrowings,id',
-            'status' => 'required|in:Good,Damaged,Lost'
+            'borrowing_id' => 'required|exists:borrowings,book_copy_id',
+            'status_id' => 'required|exists:statuses,id'
         ]);
+
 
         $result = $this->borrowingService->returnBook($request->all());
 

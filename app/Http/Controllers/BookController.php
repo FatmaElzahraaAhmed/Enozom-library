@@ -16,7 +16,15 @@ class BookController extends Controller
 
     public function statusReport()
     {
-        $books = $this->bookService->getStatusReport();
+        $books = $this->bookService->getStatusReport()->flatMap(function ($book) {
+            return $book->copies->map(function ($copy) use ($book) {
+                return [
+                    'title' => $book->title,
+                    'copy_id' => $copy->id,
+                    'status' => $copy->status->name,
+                ];
+            });
+        })->sortBy('copy_id')->values()->all();
 
         return response()->json($books, 200);
     }

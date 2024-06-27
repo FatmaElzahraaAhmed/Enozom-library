@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,10 +13,10 @@ class StatusSeeder extends Seeder
     public function run(): void
     {
         DB::table('statuses')->insert([
-            ['name' => 'Good', 'status_id' => 1],
-            ['name' => 'Damaged', 'status_id' => 2],
-            ['name' => 'Lost', 'status_id' => 3],
-            ['name' => 'Borrowed', 'status_id' => 4],
+            ['name' => 'Good', 'id' => 1],
+            ['name' => 'Damaged', 'id' => 2],
+            ['name' => 'Lost', 'id' => 3],
+            ['name' => 'Borrowed', 'id' => 4],
         ]);
     }
 }

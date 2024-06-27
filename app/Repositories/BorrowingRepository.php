@@ -13,6 +13,6 @@ class BorrowingRepository
 
     public function find($id)
     {
-        return Borrowing::find($id);
+        return Borrowing::where('book_copy_id', $id)->first();
     }
 }

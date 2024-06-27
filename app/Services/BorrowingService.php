@@ -20,6 +20,9 @@ class BorrowingService
         DB::beginTransaction();
 
         try {
+            if (BookCopy::find($data['book_copy_id'])->status_id != '1') {
+                return ['status' => 400, 'data' => ['error' => 'Book is not available for borrowing']];
+            }
             $borrowing = $this->borrowingRepository->create([
                 'student_id' => $data['student_id'],
                 'book_copy_id' => $data['book_copy_id'],
@@ -49,20 +52,20 @@ class BorrowingService
 
         try {
             $borrowing = $this->borrowingRepository->find($data['borrowing_id']);
+            if (!$borrowing) {
+                return ['status' => 404, 'data' => ['error' => 'Book is not borrowed']];
+            }
+            if ($borrowing->status_id != '4') {
+                return ['status' => 400, 'data' => ['error' => 'Book has already been returned']];
+            }
+            if ($data['status_id'] == '4' ) {
+                return ['status' => 400, 'data' => ['error' => 'Book cannot be returned with status borrowed']];
+            }
             $borrowing->returned_at = now();
             $bookCopy = BookCopy::find($borrowing->book_copy_id);
-            if ($data['status'] == 'Good') {
-                $bookCopy->status_id = '1';
-                $borrowing->status_id = '1';
-            } elseif ($data['status'] == 'Damaged') {
-                $bookCopy->status_id = '2';
-                $borrowing->status_id = '2';
-            } elseif ($data['status'] == 'Lost') {
-                $bookCopy->status_id = '3';
-                $borrowing->status_id = '3';
-            } else {
-                return ['status' => 400, 'data' => ['error' => 'Invalid status']];
-            }
+            $bookCopy->status_id = $data['status_id'];
+            $borrowing->status_id = $data['status_id'];
+
 
 
             $borrowing->save();

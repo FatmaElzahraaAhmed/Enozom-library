@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/borrow', [BorrowingController::class, 'borrowBook']);
 Route::post('/return', [BorrowingController::class, 'returnBook']);
-Route::get('/books/status', [BookController::class, 'statusReport'])->name('books.index');
+Route::get('/books', [BookController::class, 'statusReport']);
