@@ -51,7 +51,7 @@ class BorrowingService
         DB::beginTransaction();
 
         try {
-            $borrowing = $this->borrowingRepository->find($data['borrowing_id']);
+            $borrowing = $this->borrowingRepository->find($data['copy_id']);
             if (!$borrowing) {
                 return ['status' => 404, 'data' => ['error' => 'Book is not borrowed']];
             }
